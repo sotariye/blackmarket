@@ -84,8 +84,8 @@ function initCheckoutFlow() {
   const sharingDetailsContainer = document.getElementById('sharing-details-container');
   const sharingInfoTextarea = document.getElementById('vendor-sharing-info');
   
-
-  
+  const btnStripeLink = document.getElementById('btn-stripe-link');
+  let isSubmitting = false;
   let currentStep = 1;
 
   // Open Modal
@@ -128,8 +128,6 @@ function initCheckoutFlow() {
     });
   });
 
-
-
   // Clear errors when user types or edits inputs
   const allInputs = document.querySelectorAll('.form-input');
   allInputs.forEach(input => {
@@ -160,6 +158,28 @@ function initCheckoutFlow() {
       closeModal();
     }
   });
+
+  // Form submit listener to prevent page reloads if user hits enter
+  const formElement = document.getElementById('step-panel-1');
+  if (formElement) {
+    formElement.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (currentStep === 1) {
+        if (validateStep1()) {
+          currentStep = 2;
+          updateStepUI();
+        }
+      }
+    });
+  }
+
+  // Intercept inline Stripe link to trigger form submission first
+  if (btnStripeLink) {
+    btnStripeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      processPayment();
+    });
+  }
 
   /* ==========================================
      Validation Helpers
@@ -292,36 +312,84 @@ function initCheckoutFlow() {
   }
 
   /* ==========================================
-     Mock Stripe Processing Delay
+     Stripe Checkout Redirection & Formspree Submission
      ========================================== */
   function processPayment() {
+    if (isSubmitting) return;
+    isSubmitting = true;
+
+    // Generate random Ticket ID immediately
+    const randomId = '#BM2026-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
     // Add loading class to button
     btnNext.classList.add('btn-loading');
     btnNext.setAttribute('disabled', 'true');
     btnBack.setAttribute('disabled', 'true');
+    if (btnStripeLink) {
+      btnStripeLink.style.pointerEvents = 'none';
+      btnStripeLink.style.opacity = '0.6';
+    }
     
-    // Open stripe checkout in a new window
+    // Open stripe checkout in a new window synchronously to avoid popup blockers
     window.open('https://buy.stripe.com/8x27sMb4mbL4cTa3YtgnK02', '_blank');
+
+    // Compile payload
+    const payload = {
+      'Ticket ID': randomId,
+      'Business Name': document.getElementById('vendor-business-name').value.trim(),
+      'Category': document.getElementById('vendor-category').value,
+      'Contact Name': document.getElementById('vendor-name').value.trim(),
+      'Email': document.getElementById('vendor-email').value.trim(),
+      '_replyto': document.getElementById('vendor-email').value.trim(),
+      'Phone': document.getElementById('vendor-phone').value.trim(),
+      'Website or Social': document.getElementById('vendor-social').value.trim(),
+      'Product Description': document.getElementById('vendor-desc').value.trim(),
+      'Sharing Table?': document.querySelector('input[name="vendor-sharing"]:checked').value,
+      'Partner Details': document.getElementById('vendor-sharing-info').value.trim(),
+      'Requires Electrical Power?': document.getElementById('vendor-power').checked ? 'Yes' : 'No'
+    };
     
-    setTimeout(() => {
-      // Success! Update Invoice fields
-      const bizNameInput = document.getElementById('vendor-business-name').value;
-      document.getElementById('receipt-biz').textContent = bizNameInput || 'Your Business';
-      
-      // Random Receipt ID
-      const randomId = '#BM2026-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-      document.getElementById('receipt-id').textContent = randomId;
-      
-      // Move to Step 3
-      currentStep = 3;
-      btnNext.classList.remove('btn-loading');
-      btnNext.removeAttribute('disabled');
-      btnBack.removeAttribute('disabled');
-      updateStepUI();
-      
-      // Launch Confetti Celebration
-      startConfetti();
-    }, 1000);
+    // Submit to Formspree
+    fetch('https://formspree.io/f/xzdqagpa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      completeRegistration(randomId);
+    })
+    .catch(error => {
+      console.error('Formspree submission error:', error);
+      // Proceed to success anyway so the user checkout flow is not broken
+      completeRegistration(randomId);
+    });
+  }
+
+  function completeRegistration(randomId) {
+    // Success! Update Invoice fields
+    const bizNameInput = document.getElementById('vendor-business-name').value;
+    document.getElementById('receipt-biz').textContent = bizNameInput || 'Your Business';
+    document.getElementById('receipt-id').textContent = randomId;
+    
+    // Move to Step 3
+    currentStep = 3;
+    isSubmitting = false;
+    
+    btnNext.classList.remove('btn-loading');
+    btnNext.removeAttribute('disabled');
+    btnBack.removeAttribute('disabled');
+    if (btnStripeLink) {
+      btnStripeLink.style.pointerEvents = '';
+      btnStripeLink.style.opacity = '';
+    }
+    
+    updateStepUI();
+    
+    // Launch Confetti Celebration
+    startConfetti();
   }
 
   /* ==========================================
@@ -329,6 +397,7 @@ function initCheckoutFlow() {
      ========================================== */
   function resetCheckout() {
     currentStep = 1;
+    isSubmitting = false;
     updateStepUI();
     footer.style.display = 'flex';
     btnCloseModal.style.display = 'flex';
@@ -339,11 +408,17 @@ function initCheckoutFlow() {
     
     allInputs.forEach(input => clearError(input));
     
+    btnNext.classList.remove('btn-loading');
+    btnNext.removeAttribute('disabled');
+    btnBack.removeAttribute('disabled');
+    if (btnStripeLink) {
+      btnStripeLink.style.pointerEvents = '';
+      btnStripeLink.style.opacity = '';
+    }
+    
     // Default table share elements
     sharingDetailsContainer.style.display = 'none';
     sharingInfoTextarea.removeAttribute('required');
-    
-
     
     // Stop any confetti
     stopConfetti();
