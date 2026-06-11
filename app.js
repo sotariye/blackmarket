@@ -329,12 +329,9 @@ function initCheckoutFlow() {
       btnStripeLink.style.pointerEvents = 'none';
       btnStripeLink.style.opacity = '0.6';
     }
-    
-    // Open stripe checkout in a new window synchronously to avoid popup blockers
-    window.open('https://buy.stripe.com/8x27sMb4mbL4cTa3YtgnK02', '_blank');
 
-    // Compile payload
-    const payload = {
+    // Compile registration data
+    const registrationData = {
       'Ticket ID': randomId,
       'Business Name': document.getElementById('vendor-business-name').value.trim(),
       'Category': document.getElementById('vendor-category').value,
@@ -346,10 +343,43 @@ function initCheckoutFlow() {
       'Product Description': document.getElementById('vendor-desc').value.trim(),
       'Sharing Table?': document.querySelector('input[name="vendor-sharing"]:checked').value,
       'Partner Details': document.getElementById('vendor-sharing-info').value.trim(),
-      'Requires Electrical Power?': document.getElementById('vendor-power').checked ? 'Yes' : 'No'
+      'Requires Electrical Power?': document.getElementById('vendor-power').checked ? 'Yes' : 'No',
+      'Payment Status': 'Pending (Redirected to Stripe)'
     };
     
-    // Submit to Formspree
+    // Save to localStorage so we can retrieve it upon successful redirection
+    localStorage.setItem('pending_registration', JSON.stringify(registrationData));
+
+    // Submit initial registration to Formspree
+    fetch('https://formspree.io/f/xzdqagpa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(registrationData)
+    })
+    .then(response => {
+      // Once submitted to Formspree, redirect current page to Stripe Checkout
+      window.location.href = 'https://buy.stripe.com/8x27sMb4mbL4cTa3YtgnK02';
+    })
+    .catch(error => {
+      console.error('Formspree initial submission error:', error);
+      // Still redirect to Stripe Checkout so customer can pay
+      window.location.href = 'https://buy.stripe.com/8x27sMb4mbL4cTa3YtgnK02';
+    });
+  }
+
+  function confirmPaymentFormspree(pendingData) {
+    const payload = {
+      'Ticket ID': pendingData['Ticket ID'],
+      'Business Name': pendingData['Business Name'],
+      'Contact Name': pendingData['Contact Name'],
+      'Email': pendingData['Email'],
+      '_replyto': pendingData['Email'],
+      'Payment Status': 'Confirmed (Stripe Successful)'
+    };
+    
     fetch('https://formspree.io/f/xzdqagpa', {
       method: 'POST',
       headers: {
@@ -359,37 +389,49 @@ function initCheckoutFlow() {
       body: JSON.stringify(payload)
     })
     .then(response => {
-      completeRegistration(randomId);
+      console.log('Payment confirmation successfully sent to Formspree');
     })
     .catch(error => {
-      console.error('Formspree submission error:', error);
-      // Proceed to success anyway so the user checkout flow is not broken
-      completeRegistration(randomId);
+      console.error('Error sending payment confirmation to Formspree:', error);
     });
   }
 
-  function completeRegistration(randomId) {
-    // Success! Update Invoice fields
-    const bizNameInput = document.getElementById('vendor-business-name').value;
-    document.getElementById('receipt-biz').textContent = bizNameInput || 'Your Business';
-    document.getElementById('receipt-id').textContent = randomId;
-    
-    // Move to Step 3
+  function openModalDirectStep3() {
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
     currentStep = 3;
-    isSubmitting = false;
-    
-    btnNext.classList.remove('btn-loading');
-    btnNext.removeAttribute('disabled');
-    btnBack.removeAttribute('disabled');
-    if (btnStripeLink) {
-      btnStripeLink.style.pointerEvents = '';
-      btnStripeLink.style.opacity = '';
-    }
-    
     updateStepUI();
-    
-    // Launch Confetti Celebration
     startConfetti();
+  }
+
+  function checkPaymentSuccessRedirect() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+      const pendingDataStr = localStorage.getItem('pending_registration');
+      if (pendingDataStr) {
+        localStorage.removeItem('pending_registration'); // Clean up immediately to prevent duplicate requests
+        try {
+          const pendingData = JSON.parse(pendingDataStr);
+          
+          document.getElementById('receipt-biz').textContent = pendingData['Business Name'] || 'Your Business';
+          document.getElementById('receipt-id').textContent = pendingData['Ticket ID'] || '#BM2026-UNKNOWN';
+          
+          openModalDirectStep3();
+          confirmPaymentFormspree(pendingData);
+        } catch (e) {
+          console.error('Error parsing pending registration:', e);
+        }
+      } else {
+        // Fallback if localStorage is cleared or they are on a different device but redirected here
+        document.getElementById('receipt-biz').textContent = 'Your Business';
+        document.getElementById('receipt-id').textContent = 'Confirmed';
+        openModalDirectStep3();
+      }
+      
+      // Clean up URL query parameters so reload doesn't trigger the modal again
+      const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
   }
 
   /* ==========================================
@@ -423,6 +465,9 @@ function initCheckoutFlow() {
     // Stop any confetti
     stopConfetti();
   }
+
+  // Check for successful redirection from Stripe
+  checkPaymentSuccessRedirect();
 }
 
 /* ==========================================================================
