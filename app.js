@@ -396,6 +396,27 @@ function initCheckoutFlow() {
     });
   }
 
+  function sendConfirmationEmail(pendingData) {
+    fetch('/api/send-confirmation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(pendingData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        console.log('Confirmation email successfully triggered via Resend API.');
+      } else {
+        console.error('Failed to send confirmation email:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error calling /api/send-confirmation:', error);
+    });
+  }
+
   function openModalDirectStep3() {
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
@@ -418,6 +439,7 @@ function initCheckoutFlow() {
           
           openModalDirectStep3();
           confirmPaymentFormspree(pendingData);
+          sendConfirmationEmail(pendingData);
         } catch (e) {
           console.error('Error parsing pending registration:', e);
         }
