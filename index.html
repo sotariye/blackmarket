@@ -113,15 +113,36 @@
           <div class="rich-description" style="margin-bottom: 20px;">
             <p>Black Market 2026 is officially hosted at the spectacular <strong>Abyss Toronto</strong> — a premium, modern design space located in the heart of downtown Toronto. Take a peak inside the stunning venue where creators and buyers will gather:</p>
           </div>
-          <div class="venue-gallery-grid">
-            <div class="venue-image-card">
-              <img src="venue_1.jpg" alt="Abyss Toronto Venue Space" class="venue-img" loading="lazy">
+          
+          <!-- Venue Image Carousel -->
+          <div class="venue-carousel" aria-label="Venue gallery">
+            <div class="carousel-track-container">
+              <ul class="carousel-track">
+                <li class="carousel-slide active">
+                  <img src="venue_1.jpg" alt="Abyss Toronto Venue Space" class="carousel-img">
+                </li>
+                <li class="carousel-slide">
+                  <img src="venue_2.jpg" alt="Abyss Toronto Venue Seating & Interior" class="carousel-img">
+                </li>
+                <li class="carousel-slide">
+                  <img src="venue_3.jpg" alt="Abyss Toronto Premium Venue Layout" class="carousel-img">
+                </li>
+              </ul>
             </div>
-            <div class="venue-image-card">
-              <img src="venue_2.jpg" alt="Abyss Toronto Venue Seating & Interior" class="venue-img" loading="lazy">
-            </div>
-            <div class="venue-image-card">
-              <img src="venue_3.jpg" alt="Abyss Toronto Premium Venue Layout" class="venue-img" loading="lazy">
+            
+            <!-- Navigation Buttons -->
+            <button class="carousel-btn btn-left" aria-label="Previous slide">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="carousel-btn btn-right" aria-label="Next slide">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            
+            <!-- Indicators -->
+            <div class="carousel-nav">
+              <button class="carousel-indicator active" aria-label="Go to slide 1"></button>
+              <button class="carousel-indicator" aria-label="Go to slide 2"></button>
+              <button class="carousel-indicator" aria-label="Go to slide 3"></button>
             </div>
           </div>
         </section>
