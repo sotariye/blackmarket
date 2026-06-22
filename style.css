@@ -1251,6 +1251,42 @@ input[type="radio"]:checked + .radio-card .radio-circle::after {
   display: none;
 }
 
+/* Venue Spotlight Styles */
+.venue-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.venue-image-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  aspect-ratio: 4 / 3;
+  background-color: var(--bg-linen);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+}
+
+.venue-image-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.venue-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.venue-image-card:hover .venue-img {
+  transform: scale(1.06);
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .grid-wrapper {
@@ -1276,6 +1312,11 @@ input[type="radio"]:checked + .radio-card .radio-circle::after {
 @media (max-width: 768px) {
   .container {
     padding: 0 20px;
+  }
+  
+  .venue-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   
   .navbar {
