@@ -79,8 +79,8 @@
             </div>
             <div class="info-chip-text">
               <span class="info-chip-title">Location</span>
-              <span class="info-chip-value">Abyss Toronto</span>
-              <span class="info-chip-desc">1377 The Queensway, Toronto</span>
+              <span class="info-chip-value">TBA (Toronto)</span>
+              <span class="info-chip-desc">Sourcing a larger venue!</span>
             </div>
           </div>
         </section>
@@ -93,8 +93,8 @@
             
             <p>Whether you specialize in handcrafted fashion, clean beauty, wellness, home decor, or gourmet foods, this is your flagship opportunity to build your audience, grow your brand, and showcase your work.</p>
             
-            <div class="highlight-box">
-              <p>Spaces are allocated on a first-come, first-serve basis. Early arrival is recommended.</p>
+            <div class="highlight-box sold-out-highlight">
+              <p>⚡ <strong>Update:</strong> Initial booth spaces are now fully sold out! Due to overwhelming interest, we are currently searching for a larger venue in Toronto to accommodate more vendor booths and higher foot traffic. Join the waitlist below to secure your spot in line.</p>
             </div>
 
             <p><strong>Every Booth Pass Includes:</strong></p>
@@ -107,45 +107,7 @@
           </div>
         </section>
 
-        <!-- Venue Spotlight Section -->
-        <section class="section-block" id="venue">
-          <h2 class="section-title">The Venue</h2>
-          <div class="rich-description" style="margin-bottom: 20px;">
-            <p>Black Market 2026 is officially hosted at the spectacular <strong>Abyss Toronto</strong> — a premium, modern design space located at 1377 The Queensway, Toronto. Take a peak inside the stunning venue where creators and buyers will gather:</p>
-          </div>
-          
-          <!-- Venue Image Carousel -->
-          <div class="venue-carousel" aria-label="Venue gallery">
-            <div class="carousel-track-container">
-              <ul class="carousel-track">
-                <li class="carousel-slide active">
-                  <img src="venue_1.jpg" alt="Abyss Toronto Venue Space" class="carousel-img">
-                </li>
-                <li class="carousel-slide">
-                  <img src="venue_2.jpg" alt="Abyss Toronto Venue Seating & Interior" class="carousel-img">
-                </li>
-                <li class="carousel-slide">
-                  <img src="venue_3.jpg" alt="Abyss Toronto Premium Venue Layout" class="carousel-img">
-                </li>
-              </ul>
-            </div>
-            
-            <!-- Navigation Buttons -->
-            <button class="carousel-btn btn-left" aria-label="Previous slide">
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button class="carousel-btn btn-right" aria-label="Next slide">
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-            
-            <!-- Indicators -->
-            <div class="carousel-nav">
-              <button class="carousel-indicator active" aria-label="Go to slide 1"></button>
-              <button class="carousel-indicator" aria-label="Go to slide 2"></button>
-              <button class="carousel-indicator" aria-label="Go to slide 3"></button>
-            </div>
-          </div>
-        </section>
+
 
         <!-- FAQs Accordion Section -->
         <section class="section-block" id="faqs">
@@ -189,7 +151,7 @@
               </button>
               <div class="faq-body" id="faq-ans-3">
                 <div class="faq-content">
-                  Black Market 2026 is officially hosted at Abyss Toronto, located at 1377 The Queensway, Toronto. All registered vendors will receive exact address coordinates, load-in specifications, and floor map details as the event approaches.
+                  Black Market 2026 is currently sourcing a larger venue in Toronto to accommodate high foot traffic. All waitlisted and registered vendors will receive exact coordinates, address details, load-in specifications, and floor maps as soon as they are finalized.
                 </div>
               </div>
             </div>
@@ -236,29 +198,17 @@
       <aside class="sidebar-column">
         <div class="ticket-widget-card">
           <div class="ticket-card-header">
-            <span class="ticket-tag">Registration Open</span>
+            <span class="ticket-tag ticket-tag-soldout">Sold Out</span>
             <h3 class="ticket-title">Vendor Booth Pass</h3>
           </div>
           
-          <div class="ticket-price-row">
-            <div class="ticket-price-info">
-              <span class="ticket-price">$250.00 <span style="font-size: 14px; font-weight: 500; color: var(--text-secondary);">CAD</span></span>
-            </div>
-            <div class="ticket-quantity-select">
-              <button class="qty-btn" id="qty-minus" aria-label="Decrease quantity" disabled>−</button>
-              <span class="qty-val" id="qty-value">1</span>
-              <button class="qty-btn" id="qty-plus" aria-label="Increase quantity" disabled>+</button>
-            </div>
+          <div class="ticket-soldout-message">
+            <p>Initial spaces are fully sold out. We are currently searching for a larger venue in Toronto to accommodate more foot traffic and vendor capacity.</p>
           </div>
 
-          <div class="ticket-widget-actions">
-            <!-- Noscript content for added SEO -->
-            <noscript><a href="https://www.eventbrite.ca/e/vendor-application-black-market-2026-registration-1992326269504" rel="noopener noreferrer" target="_blank">Buy Tickets on Eventbrite</a></noscript>
-            <!-- Hidden Eventbrite trigger button -->
-            <button id="eventbrite-widget-modal-trigger-1992326269504" type="button" style="display: none;">Register as a vendor</button>
-
-            <button class="btn btn-primary" id="btn-register">Register as Vendor</button>
-            <div class="sales-countdown">⏳ Registration spots are limited</div>
+          <div class="ticket-widget-actions" style="margin-top: 16px;">
+            <button class="btn btn-primary" id="btn-register">Join the Waitlist</button>
+            <div class="sales-countdown">⏳ Sourcing a larger space soon</div>
           </div>
         </div>
       </aside>
@@ -269,10 +219,10 @@
   <!-- Mobile Floating Registration Drawer -->
   <div class="mobile-checkout-drawer" id="mobile-drawer">
     <div class="mobile-price-info">
-      <span class="price">$250.00 <span style="font-size: 12px; color: var(--text-secondary);">CAD</span></span>
+      <span class="price" style="color: var(--accent-error); font-size: 16px; font-weight: 700;">Sold Out</span>
       <span class="label">Vendor Booth Pass</span>
     </div>
-    <button class="btn btn-primary" id="btn-register-mobile">Register Now</button>
+    <button class="btn btn-primary" id="btn-register-mobile">Join Waitlist</button>
   </div>
 
 
@@ -309,26 +259,79 @@
     </div>
   </footer>
 
-  <!-- Eventbrite Widget scripts -->
-  <script src="https://www.eventbrite.com/static/widgets/eb_widgets.js"></script>
-  <script type="text/javascript">
-      var exampleCallback = function() {
-          console.log('Order complete!');
-      };
+  <!-- Waitlist Modal -->
+  <div class="modal-backdrop" id="waitlist-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Join the Vendor Waitlist</h3>
+        <button class="close-modal-btn" id="close-waitlist-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <form action="https://formspree.io/f/xzdqagpa" method="POST" id="waitlist-form">
+        <div class="modal-body">
+          <p style="margin-bottom: 20px; font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+            Initial booths are fully booked. We are actively sourcing a larger premium venue in Toronto to accommodate more foot traffic. Sign up below to be first in line if spaces open up or new inventory is released.
+          </p>
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="waitlist-name" class="form-label">Full Name <span>*</span></label>
+            <input type="text" id="waitlist-name" name="name" required class="form-input" placeholder="Your full name">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="waitlist-email" class="form-label">Email Address <span>*</span></label>
+            <input type="email" id="waitlist-email" name="email" required class="form-input" placeholder="you@example.com">
+          </div>
 
-      window.EBWidgets.createWidget({
-          widgetType: 'checkout',
-          eventId: '1992326269504',
-          themeSettings: {
-              brandColor: '#D1410C',
-              fontColor: '#141414',
-              background: '#FFFFFF',
-          },
-          modal: true,
-          modalTriggerElementId: 'eventbrite-widget-modal-trigger-1992326269504',
-          onOrderComplete: exampleCallback
-      });
-  </script>
+          <div class="form-group-row" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label for="waitlist-business" class="form-label">Business Name <span>*</span></label>
+              <input type="text" id="waitlist-business" name="businessName" required class="form-input" placeholder="Your brand / company">
+            </div>
+            
+            <div class="form-group">
+              <label for="waitlist-category" class="form-label">Product Category <span>*</span></label>
+              <select id="waitlist-category" name="category" required class="form-input">
+                <option value="" disabled selected>Select category</option>
+                <option value="fashion">Fashion & Apparel</option>
+                <option value="beauty">Beauty & Cosmetics</option>
+                <option value="wellness">Wellness & Health</option>
+                <option value="art">Art & Home Decor</option>
+                <option value="food">Gourmet Food & Drinks</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="waitlist-instagram" class="form-label">Instagram Handle</label>
+            <input type="text" id="waitlist-instagram" name="instagram" class="form-input" placeholder="@yourhandle">
+          </div>
+
+          <div class="form-group">
+            <label for="waitlist-notes" class="form-label">Anything else we should know?</label>
+            <textarea id="waitlist-notes" name="notes" class="form-input" style="min-height: 80px; resize: vertical;" placeholder="Tell us a bit about your products..."></textarea>
+          </div>
+        </div>
+        
+        <div class="modal-footer" style="padding: 20px 28px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 12px; background: var(--bg-linen);">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-waitlist" style="width: auto;">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-waitlist" style="width: auto;">Submit Waitlist Request</button>
+        </div>
+      </form>
+      
+      <!-- Success View (Hidden by default) -->
+      <div id="waitlist-success" style="display: none; padding: 48px 32px; text-align: center; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(5, 150, 105, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-success); margin-bottom: 8px; margin-left: auto; margin-right: auto;">
+          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="font-size: 22px; font-weight: 700; color: var(--text-primary);">You're on the list!</h3>
+        <p style="font-size: 15px; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6;">
+          Thank you for your interest in Black Market 2026. We've received your waitlist request and will notify you immediately if a vendor spot opens up or when we launch in a larger space.
+        </p>
+        <button class="btn btn-primary" id="btn-success-close" style="width: auto; margin-top: 16px; padding: 12px 24px;">Close Window</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Script File -->
   <script src="app.js"></script>
